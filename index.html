@@ -26,16 +26,22 @@
     th, td { padding:8px; border:1px solid #ddd; text-align:left; font-size:.9rem; }
     th { background:#1a237e; color:white; }
     a.nav-item { text-decoration:none; color:inherit; display:block; }
+        h2 {
+      color:#1a237e;
+      margin-bottom:1rem;
+        }
   </style>
 </head>
 <body>
 
   <div class="sidebar">
-    <h2>Barangay Panel</h2>
-    <div class="nav-item">📊 Dashboard</div>
-    <a href="search_update_record.html" class="nav-item">🔍 Search & Update Records</a>
-    <div class="nav-item">🚪 Logout</div>
-  </div>
+  <h2> </h2>
+  <div class="nav-item"> Dashboard</div>
+  <a href="search_update_record.html" class="nav-item"> Search & Update Records</a>
+  <a href="managerequest.html" class="nav-item">Manage Requests</a>
+  <div class="nav-item">Logout</div>
+</div>
+
 
   <div class="main">
     <div class="header">
@@ -68,7 +74,7 @@
       </div>
     </div>
 
-    <button class="refresh-btn" onclick="loadDashboard()">🔄 Refresh</button>
+    <button class="refresh-btn" onclick="loadDashboard()">Refresh</button>
   </div>
 
   <!-- Modal -->
@@ -128,7 +134,8 @@
               <td>${r.FULLNAME}</td>
               <td>${r.STATUS}</td>
               <td>${r['REQUESTED DOCUMENT']}</td>
-              <td>${r['TIME SUBMITTED']}</td>
+              <td>${formatTimeFromISOString(r['TIME SUBMITTED'])}</td>
+
             `;
             tbody.appendChild(tr);
           });
@@ -142,6 +149,21 @@
     }
 
     loadDashboard();
+
+    function formatTimeFromISOString(isoString) {
+  const date = new Date(isoString);
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours === 0 ? 12 : hours; // convert 0 to 12 for 12 AM/PM
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+
+  return `${hours}:${minutes} ${ampm}`;
+}
+
+  
   </script>
 
 </body>
