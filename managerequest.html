@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Requests</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      background: #f4f6fa;
+    }
+
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      background: #1a237e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .nav-item {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .nav-item:hover {
+      background: #3949ab;
+    }
+
+    a.nav-item {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .header {
+      background: #1a237e;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h2 {
+      color: #1a237e;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      margin: 2rem 0 0.5rem;
+      color: #333;
+    }
+
+    .bulk-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      table-layout: fixed;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.95rem;
+      word-wrap: break-word;
+    }
+
+    th {
+      background: #1a237e;
+      color: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .approve {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .reject {
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2></h2>
+    <a href="index.html" class="nav-item">Dashboard</a>
+    <a href="search_update_record.html" class="nav-item">Search & Update Records</a>
+    <a href="managerequest.html" class="nav-item">Manage Requests</a>
+    <div class="nav-item">Logout</div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div>
+        <strong id="current-day">Sunday</strong>,
+        <span id="current-date">---</span>
+        <span id="current-time">--:--</span>
+      </div>
+      <div>
+        Staff ID: 001 | Juan Dela Cruz |
+        <span id="weather">Weather: Sunny 31°C</span>
+      </div>
+    </div>
+
+    <h2>Manage Document Requests</h2>
+
+    <div class="bulk-actions">
+      <button class="btn approve" onclick="bulkApprove()">Approve Selected</button>
+      <button class="btn reject" onclick="bulkReject()">Reject Selected</button>
+    </div>
+
+    <!-- Online Requests Table -->
+    <h3>Online Requests</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 5%;"><input type="checkbox" onclick="toggleGroup(this, 'online')"></th>
+          <th style="width: 12%;">ID</th>
+          <th style="width: 20%;">Name</th>
+          <th style="width: 20%;">Requested Document</th>
+          <th style="width: 15%;">Transaction No.</th>
+          <th style="width: 13%;">Mode of Request</th>
+          <th style="width: 15%;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" class="row-check online"></td>
+          <td>2025-1001</td>
+          <td>JOHN SMITH</td>
+          <td>Barangay Clearance, Barangay Residency</td>
+          <td>TXN-0001</td>
+          <td>Online Request</td>
+          <td class="actions">
+            <button class="btn approve">Approve</button>
+            <button class="btn reject">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="row-check online"></td>
+          <td>2025-1002</td>
+          <td>JANE SMITH</td>
+          <td>Certificate of Residency</td>
+          <td>TXN-0002</td>
+          <td>Online Request</td>
+          <td class="actions">
+            <button class="btn approve">Approve</button>
+            <button class="btn reject">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Kiosk Requests Table -->
+    <h3>Kiosk Requests</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 5%;"><input type="checkbox" onclick="toggleGroup(this, 'kiosk')"></th>
+          <th style="width: 12%;">ID</th>
+          <th style="width: 20%;">Name</th>
+          <th style="width: 20%;">Requested Document</th>
+          <th style="width: 15%;">Queue No.</th>
+          <th style="width: 13%;">Mode of Request</th>
+          <th style="width: 15%;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox" class="row-check kiosk"></td>
+          <td>2025-0001</td>
+          <td>JOHN DOE</td>
+          <td>Barangay Residency</td>
+          <td>001</td>
+          <td>From Kiosk</td>
+          <td class="actions">
+            <button class="btn approve">Approve</button>
+            <button class="btn reject">Reject</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="row-check kiosk"></td>
+          <td>2025-0002</td>
+          <td>JANE DOE</td>
+          <td>Barangay Indigency</td>
+          <td>002</td>
+          <td>From Kiosk</td>
+          <td class="actions">
+            <button class="btn approve">Approve</button>
+            <button class="btn reject">Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById("current-day").textContent = now.toLocaleDateString(undefined, { weekday: 'long' });
+      document.getElementById("current-date").textContent = now.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById("current-time").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    function toggleGroup(masterCheckbox, type) {
+      const checkboxes = document.querySelectorAll('.row-check.' + type);
+      checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+    }
+
+    function bulkApprove() {
+      const checkboxes = document.querySelectorAll('.row-check:checked');
+      checkboxes.forEach(cb => {
+        const row = cb.closest('tr');
+        const id = row.children[1].textContent;
+        alert('Approved: ' + id);
+      });
+    }
+
+    function bulkReject() {
+      const checkboxes = document.querySelectorAll('.row-check:checked');
+      checkboxes.forEach(cb => {
+        const row = cb.closest('tr');
+        const id = row.children[1].textContent;
+        alert('Rejected: ' + id);
+      });
+    }
+  </script>
+
+</body>
+</html>
