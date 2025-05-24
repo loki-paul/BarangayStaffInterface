@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>History of Document Requests</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { display: flex; background: #f4f6fa; }
+    .sidebar {
+      width: 240px; height: 100vh; background: #fe6b40; color: white; display: flex;
+      flex-direction: column; padding: 2rem 1rem;
+    }
+    .sidebar h2 { text-align: center; margin-bottom: 2rem; }
+    .nav-item {
+      padding: 1rem; margin-bottom: 1rem; border-radius: 8px; cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav-item:hover { background: #ffb366; }
+    a.nav-item { text-decoration: none; color: inherit; display: block; }
+
+    .main { flex: 1; padding: 2rem; }
+    .header {
+      background: #59a646; color: white; padding: 1rem 2rem;
+      border-radius: 12px; margin-bottom: 2rem; display: flex; justify-content: space-between;
+    }
+
+    .top-bar {
+      display: flex; justify-content: space-between; margin-bottom: 1rem;
+    }
+    .top-bar input {
+      width: 60%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;
+    }
+
+    table {
+      width: 100%; border-collapse: collapse; background: white; margin-top: 1rem;
+    }
+    th, td {
+      padding: 10px; border: 1px solid #ccc; text-align: left;
+    }
+    th { background: #37474f; color: white; }
+
+    .status {
+      padding: 4px 8px; border-radius: 5px; color: white; font-weight: bold;
+      text-align: center;
+    }
+    .pending { background: orange; }
+    .approved { background: green; }
+    .rejected { background: red; }
+
+    .logout-btn {
+      margin-top: auto; background: #c62828; text-align: center; padding: 1rem;
+      border-radius: 8px; cursor: pointer; color: white; text-decoration: none;
+    }
+    .logout-btn:hover { background: #b71c1c; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2></h2>
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="search_update_record.html" class="nav-item">Search & Update Records</a>
+    <a href="managerequest.html" class="nav-item">Manage Requests</a>
+    <a href="history.html" class="nav-item">History</a>
+    <a href="index.html" class="logout-btn">Log out</a>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div>
+        <strong id="current-day">Monday</strong>,
+        <span id="current-date">--</span>
+        <span id="current-time">--:--</span>
+      </div>
+      <div>
+        Staff ID: 001 | Juan Dela Cruz |
+        <span id="weather">Weather: Sunny 31°C</span>
+      </div>
+    </div>
+
+    <div class="top-bar">
+      <input type="text" id="searchInput" placeholder="Search by resident name..." onkeyup="filterTable()" />
+    </div>
+
+    <table id="historyTable">
+      <thead>
+        <tr>
+          <th>Request ID</th>
+          <th>Full Name</th>
+          <th>Document Type</th>
+          <th>Mode of Request</th>
+          <th>Date Requested</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Sample Data -->
+        <tr>
+          <td>BRGY-001</td>
+          <td>John Doe</td>
+          <td>Barangay Clearance</td>
+          <td>Kiosk</td>
+          <td>May 20, 2025</td>
+          <td><span class="status approved">Approved</span></td>
+        </tr>
+        <tr>
+          <td>BRGY-002</td>
+          <td>Jane Smith</td>
+          <td>Barangay Indigency</td>
+          <td>Online Request</td>
+          <td>May 22, 2025</td>
+          <td><span class="status pending">Pending</span></td>
+        </tr>
+        <tr>
+          <td>BRGY-003</td>
+          <td>Mike Lopez</td>
+          <td>Barangay Clearance, Barangay Indigency</td>
+          <td>Kiosk</td>
+          <td>May 22, 2025</td>
+          <td><span class="status rejected">Rejected</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function filterTable() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.querySelectorAll("#historyTable tbody tr");
+      rows.forEach(row => {
+        const name = row.cells[1].textContent.toLowerCase();
+        row.style.display = name.includes(input) ? "" : "none";
+      });
+    }
+
+    // Optional: Date & Time Script
+    function updateDateTime() {
+      const now = new Date();
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const day = dayNames[now.getDay()];
+      const date = now.toLocaleDateString();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById("current-day").textContent = day;
+      document.getElementById("current-date").textContent = date;
+      document.getElementById("current-time").textContent = time;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Barangay Staff Dashboard</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+    body { display:flex; background:#f6f6f6; }
+    .sidebar { width:240px; height:100vh; background:#6f9c3d; color:white; display:flex; flex-direction:column; padding:2rem 1rem; }
+    .sidebar h2 { text-align:center; margin-bottom:2rem; }
+    .nav-item { padding:1rem; margin-bottom:1rem; border-radius:8px; cursor:pointer; transition:background .3s; }
+    .nav-item:hover { background:#ffb366; }
+    .main { flex:1; padding:2rem; }
+    .header { background: #3d9c55; color:white; padding:1rem 2rem; border-radius:12px; margin-bottom:2rem; display:flex; justify-content:space-between; }
+    .dashboard-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    .card { background:white; border-left:10px solid #3d9c55; padding:1.5rem; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,0.1); transition:transform .2s; }
+    .card:hover { transform:translateY(-5px); }
+    .card h3 { color:#3d9c55; margin-bottom:.5rem; }
+    .card p { font-size:2rem; font-weight:bold; }
+    .view-link { display:inline-block; margin-top:1rem; color:#fe6b40; text-decoration:underline; cursor:pointer; }
+    .refresh-btn { margin-top:20px; background:#508dfd; color:white; padding:8px 16px; border:none; border-radius:5px; cursor:pointer; }
+    .modal { display:none; position:fixed; top:0;left:0; width:100%;height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+    .modal-content { background:white; padding:20px; border-radius:8px; width:90%; max-height:80%; overflow-y:auto; }
+    .close-btn { float:right; cursor:pointer; font-size:1.2rem; color:red; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:8px; border:1px solid #ddd; text-align:left; font-size:.9rem; }
+    th { background:#000000; color:white; }
+    a.nav-item { text-decoration:none; color:inherit; display:block; }
+        h2 {
+      color:#7e6c1a;
+      margin-bottom:1rem;
+        }
+  .sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #fe6b40;
+  color: #f6f6ff;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+.logout-btn {
+  margin-top: auto; /* Push to bottom */
+  background: #be0000;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.logout-btn:hover {
+  background: #b71c1c;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+  <h2> </h2>
+     <a href="dashboard.html" class="nav-item">Dashboard</a>
+    <a href="search_update_record.html" class="nav-item">Search & Update Records</a>
+    <a href="managerequest.html" class="nav-item">Manage Requests</a>
+    <a href="history.html" class="nav-item">History</a>
+    <a href="index.html" class="logout-btn">Log out</a>
+</div>
+
+
+  <div class="main">
+    <div class="header">
+      <div>
+        <strong id="current-day">Sunday</strong>,
+        <span id="current-date">---</span>
+        <span id="current-time">--:--</span>
+      </div>
+      <div>
+        Staff ID: BRGY-S001 | Juan Dela Cruz |
+        <span id="weather">Weather: Sunny 31°C</span>
+      </div>
+    </div>
+
+    <div class="dashboard-cards">
+      <div class="card">
+        <h3>Pending Requests</h3>
+        <p id="pending-count">--</p>
+        <span class="view-link" onclick="showList('pending')">View List</span>
+      </div>
+      <div class="card">
+        <h3>Approved Requests</h3>
+        <p id="approved-count">--</p>
+        <span class="view-link" onclick="showList('approved')">View List</span>
+      </div>
+      <div class="card">
+        <h3>Total in Queue</h3>
+        <p id="queue-count">--</p>
+        <span class="view-link" onclick="showList('queue')">View List</span>
+      </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadDashboard()">Refresh</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="listModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">✖</span>
+      <h3 id="modalTitle">Request List</h3>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Status</th><th>Document</th><th>Time Submitted</th></tr>
+        </thead>
+        <tbody id="requestTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById("current-day").textContent = now.toLocaleDateString(undefined,{weekday:'long'});
+      document.getElementById("current-date").textContent = now.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+      document.getElementById("current-time").textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',hour12:true});
+    }
+    setInterval(updateDateTime,1000);
+    updateDateTime();
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwM3sWV4QaCwHcE_7XoMIBLGLyIOuP6PwlGoNH2ESTaV7aeG4pke3zEeR_0VxbR5PCHKQ/exec";
+
+    function loadDashboard() {
+      fetch(`${scriptURL}?type=dashboard`)
+        .then(r=>r.json())
+        .then(data=>{
+          document.getElementById("pending-count").textContent  = data.pending;
+          document.getElementById("approved-count").textContent = data.approvedTotal;
+          document.getElementById("queue-count").textContent    = data.queue;
+        })
+        .catch(console.error);
+    }
+
+    function showList(filter) {
+      const titles = {
+        pending:  "Pending Requests",
+        approved: "Approved Requests",
+        queue:    "Total in Queue"
+      };
+      document.getElementById("modalTitle").textContent = titles[filter];
+
+      fetch(`${scriptURL}?type=list&filter=${filter}`)
+        .then(r=>r.json())
+        .then(rows=>{
+          const tbody = document.getElementById("requestTableBody");
+          tbody.innerHTML = "";
+          rows.forEach(r=>{
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${r.ID_REQUEST}</td>
+              <td>${r.FULLNAME}</td>
+              <td>${r.STATUS}</td>
+              <td>${r['REQUESTED DOCUMENT']}</td>
+              <td>${formatTimeFromISOString(r['TIME SUBMITTED'])}</td>
+
+            `;
+            tbody.appendChild(tr);
+          });
+          document.getElementById("listModal").style.display="flex";
+        })
+        .catch(console.error);
+    }
+
+    function closeModal(){
+      document.getElementById("listModal").style.display="none";
+    }
+
+    loadDashboard();
+
+    function formatTimeFromISOString(isoString) {
+  const date = new Date(isoString);
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours === 0 ? 12 : hours; // convert 0 to 12 for 12 AM/PM
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+
+  return `${hours}:${minutes} ${ampm}`;
+}
+
+  
+  </script>
+
+</body>
+</html>
