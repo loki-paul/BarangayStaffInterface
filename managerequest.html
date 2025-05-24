@@ -13,13 +13,13 @@
 
     body {
       display: flex;
-      background: #f4f6fa;
+      background: #f6f6f6;
     }
 
     .sidebar {
       width: 240px;
       height: 100vh;
-      background: #1a237e;
+      background: #fe6b40;
       color: white;
       display: flex;
       flex-direction: column;
@@ -40,7 +40,7 @@
     }
 
     .nav-item:hover {
-      background: #3949ab;
+      background: #ffb366;
     }
 
     a.nav-item {
@@ -55,7 +55,7 @@
     }
 
     .header {
-      background: #1a237e;
+      background: #3d9c55;
       color: white;
       padding: 1rem 2rem;
       border-radius: 12px;
@@ -65,7 +65,7 @@
     }
 
     h2 {
-      color: #1a237e;
+      color: #000000;
       margin-bottom: 1rem;
     }
 
@@ -100,7 +100,7 @@
     }
 
     th {
-      background: #1a237e;
+      background: #3d9c55;
       color: white;
     }
 
@@ -130,16 +130,41 @@
       background-color: #f44336;
       color: white;
     }
+    .sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #fe6b40;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+.logout-btn {
+  margin-top: auto; /* Push to bottom */
+  background: #c62828;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.logout-btn:hover {
+  background: #b71c1c;
+}
+
   </style>
 </head>
 <body>
 
   <div class="sidebar">
     <h2></h2>
-    <a href="index.html" class="nav-item">Dashboard</a>
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
     <a href="search_update_record.html" class="nav-item">Search & Update Records</a>
     <a href="managerequest.html" class="nav-item">Manage Requests</a>
-    <div class="nav-item">Logout</div>
+    <a href="history.html" class="nav-item">History</a>
+    <a href="index.html" class="logout-btn">Log out</a>
   </div>
 
   <div class="main">
@@ -150,7 +175,7 @@
         <span id="current-time">--:--</span>
       </div>
       <div>
-        Staff ID: 001 | Juan Dela Cruz |
+        Staff ID: BRGY-S001 | Juan Dela Cruz |
         <span id="weather">Weather: Sunny 31°C</span>
       </div>
     </div>
