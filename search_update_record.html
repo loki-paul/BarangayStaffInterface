@@ -7,7 +7,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
     body { display: flex; background: #f4f6fa; }
     .sidebar {
-      width: 240px; height: 100vh; background: #1a237e; color: white; display: flex;
+      width: 240px; height: 100vh; background: #fe6b40; color: white; display: flex;
       flex-direction: column; padding: 2rem 1rem;
     }
     .sidebar h2 { text-align: center; margin-bottom: 2rem; }
@@ -15,12 +15,12 @@
       padding: 1rem; margin-bottom: 1rem; border-radius: 8px; cursor: pointer;
       transition: background 0.3s;
     }
-    .nav-item:hover { background: #3949ab; }
+    .nav-item:hover { background: #ffb366; }
     a.nav-item { text-decoration: none; color: inherit; display: block; }
 
     .main { flex: 1; padding: 2rem; }
     .header {
-      background: #1a237e; color: white; padding: 1rem 2rem;
+      background: #59a646; color: white; padding: 1rem 2rem;
       border-radius: 12px; margin-bottom: 2rem; display: flex; justify-content: space-between;
     }
 
@@ -32,7 +32,7 @@
       width: 100%; border-collapse: collapse; background: white;
     }
     th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th { background: #1a237e; color: white; }
+    th { background: #59a646; color: white; }
 
     .resident-panel {
       flex: 1; background: white; border-radius: 10px; padding: 1.5rem;
@@ -42,7 +42,7 @@
 
     .resident-panel.active { display: block; }
 
-    .resident-panel h3 { color: #1a237e; margin-bottom: 1rem; }
+    .resident-panel h3 { color: #000000; margin-bottom: 1rem; }
     .resident-panel p { margin-bottom: 0.5rem; }
     .resident-panel .btn-group { margin-top: 1rem; }
 
@@ -64,7 +64,7 @@
 
     .top-bar button {
       padding: 8px 14px; border: none; border-radius: 6px;
-      cursor: pointer; background: #1a237e; color: white;
+      cursor: pointer; background: #fe6b40; color: white;
     }
 
     .modal {
@@ -130,14 +130,37 @@
 }
 button {
   padding: 8px 12px;
-  background-color: #4CAF50;
+  background-color: #1a237e;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 button:hover {
-  background-color: #45a049;
+  background-color: #4583a0;
+}
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #fe6b40;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+.logout-btn {
+  margin-top: auto; /* Push to bottom */
+  background: #c62828;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.logout-btn:hover {
+  background: #b71c1c;
 }
 
   </style>
@@ -146,10 +169,11 @@ button:hover {
 
   <div class="sidebar">
     <h2></h2>
-    <a href="index.html" class="nav-item">Dashboard</a>
+    <a href="dashboard.html" class="nav-item">Dashboard</a>
     <a href="search_update_record.html" class="nav-item">Search & Update Records</a>
     <a href="managerequest.html" class="nav-item">Manage Requests</a>
-    <div class="nav-item">Logout</div>
+    <a href="history.html" class="nav-item">History</a>
+    <a href="index.html" class="logout-btn">Log out</a>
   </div>
 
 <div class="main">
@@ -162,7 +186,7 @@ button:hover {
       <span id="current-time">--:--</span>
     </div>
     <div>
-      Staff ID: 001 | Juan Dela Cruz |
+      Staff ID: BRGY-S001 | Juan Dela Cruz |
       <span id="weather">Weather: Sunny 31°C</span>
     </div>
   </div>
